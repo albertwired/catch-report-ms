@@ -6,9 +6,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="report")
  */
-class Movie {
+class Report {
   /**
-   * @ORM\Column(type="biginteger")
+   * @ORM\Column(type="integer")
    * @ORM\Id
    * @ORM\GeneratedValue(strategy="AUTO")
    */
@@ -25,12 +25,12 @@ class Movie {
    */
   private $order_datetime;
   /**
-   * @ORM\Column(type="decimal", length=15, decimals=2)
+   * @ORM\Column(type="decimal", length=15, precision=2)
    * @Assert\NotBlank()
    */
   private $total_order_value;
   /**
-   * @ORM\Column(type="decimal", length=15, decimals=2)
+   * @ORM\Column(type="decimal", length=15, precision=2)
    * @Assert\NotBlank()
    */
   private $average_unit_price;
@@ -45,7 +45,7 @@ class Movie {
    */
   private $total_units_count;
   /**
-   * @ORM\Column(type="integer")
+   * @ORM\Column(type="string", length=30)
    * @Assert\NotBlank()
    */
   private $customer_state;
