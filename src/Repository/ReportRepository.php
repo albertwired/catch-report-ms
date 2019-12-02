@@ -20,8 +20,10 @@ class ReportRepository {
     {
         $this->store = [];
         $source = $this->s3->getObject('catch-anggi', 'challenge-1-in.jsonl');
-        JsonObjects::from($source)->each(function (array $object) {
-            $this->storeData($object);
+        JsonObjects::from($source)->chunk(100,function (array $object) {
+            foreach ($object as $obj) {
+                $this->storeData($obj);
+            }
         });
         return $this->store;
     }
@@ -42,7 +44,7 @@ class ReportRepository {
           $result['total_units_count'] += $items['quantity'];
           $result['item_prices'][] = $items['unit_price'];
         }
-        $result['average_item_price'] = array_sum($result['item_prices'])/count($result['item_prices']);
+        $result['average_item_price'] = (float) number_format((array_sum($result['item_prices'])/count($result['item_prices'])),2,',','.');
         unset($result['item_prices']);
         $this->store[]=$result;
     }
