@@ -10,7 +10,6 @@
         "friendsofsymfony/rest-bundle": "^2.6",
         "jms/serializer-bundle": "^3.5",
         "nelmio/api-doc-bundle": "^3.5",
-        "salsify/json-streaming-parser": "^8.1",
         "sensio/framework-extra-bundle": "^5.5",
         "swiftmailer/swiftmailer": "^6.0",
         "symfony/amazon-mailer": "4.4.*",
@@ -31,7 +30,8 @@
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.5",
-        "symfony/maker-bundle": "^1.14"
+        "symfony/maker-bundle": "^1.14",
+        "symfony/web-server-bundle": "4.4.*"
     },
     "config": {
         "preferred-install": {

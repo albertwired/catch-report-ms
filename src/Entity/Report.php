@@ -25,12 +25,12 @@ class Report {
    */
   private $order_datetime;
   /**
-   * @ORM\Column(type="decimal", length=15, precision=2)
+   * @ORM\Column(type="decimal", precision=15, scale=2)
    * @Assert\NotBlank()
    */
   private $total_order_value;
   /**
-   * @ORM\Column(type="decimal", length=15, precision=2)
+   * @ORM\Column(type="decimal", precision=15, scale=2)
    * @Assert\NotBlank()
    */
   private $average_unit_price;
