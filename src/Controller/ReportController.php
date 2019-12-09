@@ -14,6 +14,7 @@ use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Filesystem\Filesystem;
 /**
  * Report controller.
  * @Route("/api", name="api_")
@@ -71,9 +72,19 @@ class ReportController extends FOSRestController
         ];
         $serializer = new Serializer([new ObjectNormalizer()],$serializerOption);
         $result = $serializer->serialize($reports,$data['result-type']);
+        
         $response = new Response($result);
         $response->headers->set('Content-Type', 'text/'.$data['result-type']);
         $response->headers->set('Content-Disposition', 'attachment; filename="out.'.$data['result-type'].'"');
+        if(isset($data['email-to']) && $data['email-to']){
+          $filesystem = new Filesystem();
+          $filesystem->mkdir( dirname(__DIR__).'/tmp');
+          $filesystem->touch( dirname(__DIR__).'/tmp/out.'.$data['result-type']);
+          $filesystem->appendToFile(dirname(__DIR__).'/tmp/out.'.$data['result-type'],$result);
+          $reportRepository->sendNotification($data['email-to'],dirname(__DIR__).'/tmp/out.'.$data['result-type']);
+          $filesystem->remove($data['email-to'],dirname(__DIR__).'/tmp/out.'.$data['result-type']);
+          return ['message'=>'report has been sent to email'];
+        }
         return $response;
     }else{
         return $result;

@@ -8,18 +8,20 @@ use App\Helpers\Aws\AwsS3Helper;
 use Cerbero\JsonObjects\JsonObjects;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use PHP_CodeSniffer\Reporter;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class ReportRepository extends ServiceEntityRepository{
 
     protected $s3;
-    public function __construct(AwsS3Helper $s3,ManagerRegistry $registry)
+    public function __construct(AwsS3Helper $s3,ManagerRegistry $registry,MailerInterface $mailer)
     {
         parent::__construct($registry, Report::class);
         $this->s3 = $s3;
         $this->store = [];
         $this->bucket = $_ENV['AWS_BUCKET_NAME'];
         $this->source = $_ENV['REPORT_FILE'];
+        $this->mailer = $mailer;
     }
 
     public function streamS3()
@@ -117,5 +119,19 @@ class ReportRepository extends ServiceEntityRepository{
         );
 
         return $query->getResult();
+    }
+
+    public function sendNotification($email,$file = null)
+    {
+        $email = (new Email())
+            ->from('test@gudangartdesign.xyz')
+            ->to($email)
+            ->subject('Catch Order Report')
+            ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+        if($file){
+            $email->attachFromPath($file);
+        }
+        $this->mailer->send($email);
     }
 }
