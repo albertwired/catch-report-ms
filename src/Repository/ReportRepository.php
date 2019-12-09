@@ -127,8 +127,8 @@ class ReportRepository extends ServiceEntityRepository{
             ->from('test@gudangartdesign.xyz')
             ->to($email)
             ->subject('Catch Order Report')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+            ->text('The report that requested was attached')
+            ->html('<p>The report that requested was attached</p>');
         if($file){
             $email->attachFromPath($file);
         }

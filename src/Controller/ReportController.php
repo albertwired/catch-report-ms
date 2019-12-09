@@ -82,7 +82,7 @@ class ReportController extends FOSRestController
           $filesystem->touch( dirname(__DIR__).'/tmp/out.'.$data['result-type']);
           $filesystem->appendToFile(dirname(__DIR__).'/tmp/out.'.$data['result-type'],$result);
           $reportRepository->sendNotification($data['email-to'],dirname(__DIR__).'/tmp/out.'.$data['result-type']);
-          $filesystem->remove($data['email-to'],dirname(__DIR__).'/tmp/out.'.$data['result-type']);
+          $filesystem->remove(dirname(__DIR__).'/tmp/out.'.$data['result-type']);
           return ['message'=>'report has been sent to email'];
         }
         return $response;
