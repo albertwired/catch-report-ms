@@ -26,10 +26,9 @@ class ReportController extends FOSRestController
    *
    * @return Response
    */
-  public function getReportAction()
+  public function getReportAction(ReportRepository $reportRepository)
   {
-    $repository = $this->getDoctrine()->getRepository(Report::class);
-    $reports = $repository->findall();
+    $reports = $reportRepository->showReports();
     return $reports;
     return $this->handleView($this->view($reports));
   }
